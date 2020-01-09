@@ -3,13 +3,11 @@
 Summary: A file compression utility
 Name: bzip2
 Version: 1.0.6
-Release: 13%{?dist}
+Release: 8%{?dist}
 License: BSD
 Group: Applications/File
 URL: http://www.bzip.org/
 Source: http://www.bzip.org/%{version}/%{name}-%{version}.tar.gz
-
-Requires: bzip2-libs = %{version}-%{release}
 
 Patch0: bzip2-1.0.4-saneso.patch
 Patch1: bzip2-1.0.4-cflags.patch
@@ -52,19 +50,13 @@ Libraries for applications using the bzip2 compression format.
 %patch2 -p1 -b .bz2recover
 
 %build
-%ifarch ppc64 ppc64le
-export O3="-O3"
-%else
-export O3=""
-%endif
-
 make -f Makefile-libbz2_so CC="%{__cc}" AR="%{__ar}" RANLIB="%{__ranlib}" \
-    CFLAGS="$RPM_OPT_FLAGS -D_FILE_OFFSET_BITS=64 -fpic -fPIC $O3" \
+    CFLAGS="$RPM_OPT_FLAGS -D_FILE_OFFSET_BITS=64 -fpic -fPIC" \
     %{?_smp_mflags} all
 
 rm -f *.o
 make CC="%{__cc}" AR="%{__ar}" RANLIB="%{__ranlib}" \
-    CFLAGS="$RPM_OPT_FLAGS -D_FILE_OFFSET_BITS=64 $O3" \
+    CFLAGS="$RPM_OPT_FLAGS -D_FILE_OFFSET_BITS=64" \
     %{?_smp_mflags} all
 
 %install
@@ -106,24 +98,6 @@ ln -s bzmore.1 $RPM_BUILD_ROOT%{_mandir}/man1/bzless.1
 %{_libdir}/*.so
 
 %changelog
-* Thu Jul 31 2014 jchaloup <jchaloup@redhat.com> - 1.0.6-13
-- resolves: #1123489
-  recompiled with -O3 flag for ppc64le arch
-
-* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1.0.6-12
-- Mass rebuild 2014-01-24
-
-* Fri Jan 10 2014 Peter Schiffer <pschiffe@redhat.com> - 1.0.6-11
-- related: #1051062
-  added explicit requires on bzip2-libs subpackage from main package
-
-* Fri Jan 10 2014 Peter Schiffer <pschiffe@redhat.com> - 1.0.6-10
-- resolves: #1051062
-  recompiled with -O3 flag for ppc64 arch
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.0.6-9
-- Mass rebuild 2013-12-27
-
 * Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.6-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
