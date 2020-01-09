@@ -3,7 +3,7 @@
 Summary: A file compression utility
 Name: bzip2
 Version: 1.0.6
-Release: 12%{?dist}
+Release: 13%{?dist}
 License: BSD
 Group: Applications/File
 URL: http://www.bzip.org/
@@ -52,7 +52,7 @@ Libraries for applications using the bzip2 compression format.
 %patch2 -p1 -b .bz2recover
 
 %build
-%ifarch ppc64
+%ifarch ppc64 ppc64le
 export O3="-O3"
 %else
 export O3=""
@@ -106,6 +106,10 @@ ln -s bzmore.1 $RPM_BUILD_ROOT%{_mandir}/man1/bzless.1
 %{_libdir}/*.so
 
 %changelog
+* Thu Jul 31 2014 jchaloup <jchaloup@redhat.com> - 1.0.6-13
+- resolves: #1123489
+  recompiled with -O3 flag for ppc64le arch
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1.0.6-12
 - Mass rebuild 2014-01-24
 
